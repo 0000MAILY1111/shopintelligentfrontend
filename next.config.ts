@@ -8,10 +8,7 @@ const nextConfig: NextConfig = {
       protocol: 'http',
       hostname: process.env.DOMAIN!,
     },
-    {
-      protocol: 'https',
-      hostname: process.env.DOMAIN!,
-    },
+   
     {
       protocol: 'http',
       hostname: 'localhost',

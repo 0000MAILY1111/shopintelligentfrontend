@@ -1,6 +1,6 @@
 
-import { Product } from '@/app/src/schemas';
-import { formatCurrency } from '@/app/src/utils';
+import { Product } from '@/src/schemas';
+import { formatCurrency } from '@/src/utils';
 import Image from 'next/image';
 import React from 'react';
 
