@@ -11,7 +11,6 @@ export default function AddProductButton({product}: {product: Product}) {
      <button 
                 type='button' 
                 className="absolute top-5 right-5 bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full transition-colors"
-                aria-label="Agregar al carrito"
                 onClick={() => addToCart(product)}
             >
                 <svg 

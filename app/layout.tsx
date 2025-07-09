@@ -1,21 +1,15 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+
 import MainNav from "@/components/ui/MainNav";
+import ShoppingCart from "@/components/cart/ShoppingCart";
+import "@/app/globals.css";
+import { Inter } from "next/font/google";
+import type { Metadata } from "next";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Tienda Inteligente",
-  description: "Generated smart Intelligent app",
+  title: "MxZ Tienda Inteligente",
+  description: "Tu tienda inteligente de tecnología",
 };
 
 export default function RootLayout({
@@ -24,16 +18,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <MainNav />
-        <main className="lg:flex lg:h-screen lg:overflow-y-hidden">
-          <div className="md:flex-1 md:h-screen md:overflow-y-scroll pt-10 pb-32 px-10">
-            {children}
-          </div>
-          <aside className="md:w-96 md:h-screen md:overflow-y-scroll pt-10 pb-32 px-5">
-          </aside>
-        </main>
+    <html lang="es">
+      <body className={inter.className}>
+        <div className="min-h-screen bg-gradient-to-b from-gray-100 to-white">
+          <MainNav />
+          <main className="lg:flex lg:min-h-screen">
+            <div className="md:flex-1 md:overflow-y-auto pt-10 pb-32 px-10">
+              {children}
+            </div>
+            <aside className="md:w-96 md:overflow-y-auto pt-10 pb-32 px-5 border-l border-gray-200">
+              <ShoppingCart />
+            </aside>
+          </main>
+        </div>
       </body>
     </html>
   );
