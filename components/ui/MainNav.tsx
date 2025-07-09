@@ -1,4 +1,4 @@
-import { CategoryResponseSchema } from "@/src/schemas";
+import { CategoriesResponseSchema } from "@/src/schemas";
 import Logo from "./Logo";
 import Link from "next/link";
 
@@ -13,7 +13,7 @@ async function getCategories () {
     
     const json = await req.json();
     console.log('Categories response:', json);
-    const categories  = CategoryResponseSchema.parse(json);
+    const categories  = CategoriesResponseSchema.parse(json);
     return categories;
 
   } catch (error) {

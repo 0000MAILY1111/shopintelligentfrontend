@@ -1,7 +1,8 @@
 "use client"
+import { CartItem } from "@/src/schemas";
 import { useStore } from "@/src/store";
 
-export default function ShoppingCartItem() {
+export default function ShoppingCartItem({item}: {item : CartItem}) {
     return (
         <li className="flex items-center space-x-6 py-6 relative">
             <div className='h-24 w-24'>

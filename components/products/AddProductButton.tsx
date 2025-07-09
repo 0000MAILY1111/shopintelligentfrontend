@@ -9,9 +9,9 @@ export default function AddProductButton({product}: {product: Product}) {
     
   return (
      <button 
-                type='button' 
-                className="absolute top-5 right-5 bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full transition-colors"
-                onClick={() => addToCart(product)}
+            type='button' 
+            className="absolute top-5 right-5 bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full transition-colors"
+            onClick={() => addToCart(product)}
             >
                 <svg 
                     xmlns="http://www.w3.org/2000/svg" 

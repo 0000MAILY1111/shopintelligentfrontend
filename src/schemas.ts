@@ -14,7 +14,7 @@ export const CategorySchema = z.object({
     name: z.string()
 })
 
-export const CategoryResponseSchema = z.array(CategorySchema);
+export const CategoriesResponseSchema = z.array(CategorySchema);
 
 export const CategoryWithProductsResponseSchema = CategorySchema.extend({
     products: z.array(ProductSchema)
@@ -29,11 +29,13 @@ const ShoppingCartContentsSchema = ProductSchema.pick ({
 }).extend({
     productId: z.number(),
     quantity: z.number()
-
 })
 
 export const ShoppingCartSchema = z.array (ShoppingCartContentsSchema)
 
 export type Product = z.infer<typeof ProductSchema>;
 export type ShoppingCart = z.infer<typeof ShoppingCartSchema>
+export type CartItem = z.infer <typeof ShoppingCartContentsSchema>
+
+
 export type Category = z.infer<typeof CategorySchema>;
