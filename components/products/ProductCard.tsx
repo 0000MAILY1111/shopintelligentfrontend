@@ -11,20 +11,22 @@ export default function ProductCard({ product }: { product: Product }) {
                 <Image
                     src={`${process.env.NEXT_PUBLIC_API_URL}/img/${product.image}`}
                     alt={`Imagen de Producto ${product.name}`}
-                    width={400}
-                    height={600}
+                    fill
+                    className="object-cover rounded-lg"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    priority
                 />
-
-                <div className="p-3 space-y-2">
-                    <h3 className="text-xl font-bold text-gray-600">{product.name}</h3>
-                    <p className="text-gray-500">Disponibles: {product.inventory}</p>
-                    <p className="text-2xl font-extrabold text-gray-900">
-                        {formatCurrency(product.price)}
-                    </p>
-                </div>
             </div>
-            <AddProductButton
-                product={product} />
+            
+            <div className="p-3 space-y-2">
+                <h3 className="text-xl font-bold text-gray-600">{product.name}</h3>
+                <p className="text-gray-500">Disponibles: {product.inventory}</p>
+                <p className="text-2xl font-extrabold text-gray-900">
+                    {formatCurrency(product.price)}
+                </p>
+            </div>
+            
+            <AddProductButton product={product} />
         </div>
     );
 }
