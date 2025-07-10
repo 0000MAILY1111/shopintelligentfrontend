@@ -33,6 +33,10 @@ const ShoppingCartContentsSchema = ProductSchema.pick ({
 
 export const ShoppingCartSchema = z.array (ShoppingCartContentsSchema)
 
+export const CouponResponseSchema = z.object ({
+    name: z.string().default  ('')     
+})
+
 export type Product = z.infer<typeof ProductSchema>;
 export type ShoppingCart = z.infer<typeof ShoppingCartSchema>
 export type CartItem = z.infer <typeof ShoppingCartContentsSchema>

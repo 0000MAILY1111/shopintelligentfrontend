@@ -2,6 +2,7 @@
 import { useStore } from "@/src/store";
 import ShoppingCartItem from "./ShoppingCartitem";
 import Amount from "./Amount";
+import CouponForm from "./CouponForm";
 
 export default function ShoppingCart() {
     const contents = useStore(state => state.contents);
@@ -25,9 +26,9 @@ export default function ShoppingCart() {
                         <Amount
                         label="Total a Pagar"
                         amount={total}
-                        
                         />
                     </dl>
+                    <CouponForm/>
                 </>
             ) : (
                 <p className="text-xl text-center text-gray-900"> El carrito esta vacio</p>
