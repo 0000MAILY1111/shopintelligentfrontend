@@ -14,16 +14,21 @@ interface Store {
     calculateTotal: () => void
     applyCoupon: (couponName: string) => Promise<void>
     applyDiscount: () => void
+    clearOrder: () => void 
 }
 
-export const useStore = create<Store>()(devtools((set, get) => ({
+const initialState = {
     total: 0,
+    discount: 0,
     contents: [],
     coupon: {
         percentage: 0,
-        name: '',
+        name:'',
         message: '',
     },
+}
+export const useStore = create<Store>()(devtools((set, get) => ({
+    ...initialState,
     addToCart: (product) => {
         const { id: productId, categoryId, ...data } = product;
         let contents: ShoppingCart = []
@@ -57,6 +62,9 @@ export const useStore = create<Store>()(devtools((set, get) => ({
         set((state) => ({
             contents: state.contents.filter(item => item.productId !== id)
         }))
+        if (!get().contents.length ){
+            get().clearOrder()
+        }
         get().calculateTotal();
 
     },
@@ -70,63 +78,29 @@ export const useStore = create<Store>()(devtools((set, get) => ({
         }
     },
     applyCoupon: async (couponName) => {
-    try {
-        console.log('🚀 Iniciando petición a:', 'http://localhost:3000/cupons');
-        console.log('📦 Enviando datos:', { name: couponName });
+        try {
+            const req = await fetch('/cupons', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: couponName })
+            });
 
-        const req = await fetch('http://localhost:3000/cupons/apply-cupons', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                name: couponName  // Solo enviar el nombre para buscar el cupón
-            })
-        });
+            const data = await req.json();
 
-        console.log('✅ Respuesta recibida:');
-        console.log('Status:', req.status);
-        console.log('OK:', req.ok);
-
-        if (!req.ok) {
-            const errorData = await req.json();
-            console.error('❌ Error del servidor:', errorData);
-            set(() => ({
-                coupon: {
-                    name: '',
-                    percentage: 0,
-                    message: errorData.message || 'Error al aplicar el cupón'
-                }
-            }));
-            return;
-        }
-
-        const json = await req.json();
-        console.log('✅ JSON recibido:', json);
-
-        const coupon = {
-            name: json.name,
-            percentage: json.percentage,
-            message: 'Cupón aplicado correctamente',
-        };
-
-        set(() => ({ coupon }));
-
-        if (coupon.percentage) {
-            get().applyDiscount();
-        }
-
-    } catch (error) {
-        console.error('💥 Error applying coupon:', error);
-        set(() => ({
-            coupon: {
-                name: '',
-                percentage: 0,
-                message: 'Error al aplicar el cupón'
+            if (!req.ok) {
+                console.error('Error servidor:', data.message);
+                set(() => ({ coupon: { name: '', percentage: 0, message: Array.isArray(data.message) ? data.message.join(', ') : data.message } }));
+                return;
             }
-        }));
-    }
-},
+
+            set(() => ({ coupon: { name: data.name, percentage: data.percentage, message: 'Cupón aplicado' } }));
+            if (data.percentage) get().applyDiscount();
+
+        } catch (error) {
+            console.error('Error:', error);
+            set(() => ({ coupon: { name: '', percentage: 0, message: 'Error al aplicar cupón' } }));
+        }
+    },
     applyDiscount: () => {
         const subtotalAmount = get().contents.reduce((total, item) => total + (item.quantity * item.price), 0);
         const discount = (get().coupon.percentage / 100) * subtotalAmount
@@ -135,8 +109,11 @@ export const useStore = create<Store>()(devtools((set, get) => ({
         set(() => ({
             discount,
             total
-        }
-
-        ))
+        } ))
     },
+    clearOrder : () => {
+        set(() => ({
+            ...initialState
+        } ))
+    }
 })))
