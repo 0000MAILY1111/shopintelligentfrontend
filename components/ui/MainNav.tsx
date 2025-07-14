@@ -31,19 +31,21 @@ export default async function MainNav() {
         </div>
 
         <nav className="flex flex-col md:flex-row gap-2 items-center mt-5 md:mt-0">
-          {
-            categories.map (
+          {categories.map (
               category => (
                 <Link
                 key={category.id}
-                href={`/store/${category.id}`}
+                href={`/${category.id}`}
                 className="text-white hover:text-green-300  transition-colors font-bold padding-2"
                 >{ category.name}
                 </Link>
-              )
-
-            )
-          }
+              ))}
+              <Link
+              href={'/admin/sales'}
+              className="rounded bg-green-400 font-bold py-2 px-10 "
+              >
+               Panel de Administracion 
+              </Link>
         </nav>
     </header>
   )
