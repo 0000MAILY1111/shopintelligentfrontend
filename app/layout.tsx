@@ -4,6 +4,7 @@ import ShoppingCart from "@/components/cart/ShoppingCart";
 import "@/app/globals.css";
 import { Inter } from "next/font/google";
 import type { Metadata } from "next";
+import ToastNotification from "@/components/ui/ToastNotification";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,7 +31,8 @@ export default function RootLayout({
               <ShoppingCart />
             </aside>
           </main>
-          
+
+          <ToastNotification />
         </div>
       </body>
     </html>

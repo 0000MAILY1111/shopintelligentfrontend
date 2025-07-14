@@ -1,7 +1,8 @@
 import { submitOrder } from "@/actions/submit-order-action"
 import { useStore } from "@/src/store"
 import { error } from "console"
-import React, { useActionState } from "react"
+import React, { useActionState, useEffect } from "react"
+import { toast } from "react-toastify"
 import { success } from "zod/v4"
 
 export default function SubmitOrderForm() {
@@ -22,7 +23,12 @@ export default function SubmitOrderForm() {
             success: ''
     })
 
-    
+    useEffect ( ()=> {
+        
+        if (state.success) {
+            toast.success (state.success)
+        }
+    }, [state])
 
     return (
         <form action={dispatch}>
