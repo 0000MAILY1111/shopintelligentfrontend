@@ -15,7 +15,7 @@ export default function Amount ({label, amount, discount}: AmountProps) {
                 <span className="text-gray-500">{label}</span>
             </dt>
             <dd className="text-gray-900">
-                 <span className="text-gray-500">{formatCurrency(amount)}</span>
+                 <span className="text-gray-500">{discount && '-' }{formatCurrency(amount)}</span>
             </dd>
         </div>
     )

@@ -5,15 +5,15 @@ import { Coupon, CouponResponseSchema, Product, ShoppingCart } from "./schemas";
 
 interface Store {
     total: number
-    discount : number
+    discount: number
     contents: ShoppingCart
     coupon: Coupon
     addToCart: (product: Product) => void
     updateQuantity: (id: Product['id'], quantity: number) => void
     removeFromCart: (id: Product['id']) => void
     calculateTotal: () => void
-    applyCoupon: (couponName: string) => Promise <void>
-    applyDiscount: () => void 
+    applyCoupon: (couponName: string) => Promise<void>
+    applyDiscount: () => void
 }
 
 export const useStore = create<Store>()(devtools((set, get) => ({
@@ -50,51 +50,93 @@ export const useStore = create<Store>()(devtools((set, get) => ({
         set((state) => ({
             contents: state.contents.map(item => item.productId === id ? { ...item, quantity } : item)
         }))
-                get().calculateTotal();
+        get().calculateTotal();
 
     },
     removeFromCart: (id) => {
         set((state) => ({
             contents: state.contents.filter(item => item.productId !== id)
         }))
-                get().calculateTotal();
+        get().calculateTotal();
 
-    },  
+    },
     calculateTotal() {
-        const total = get().contents.reduce((total, item) => total + (item.quantity * item.price ), 0);
+        const total = get().contents.reduce((total, item) => total + (item.quantity * item.price), 0);
         set(() => ({
             total
         }))
         if (get().coupon.percentage) {
-            get ().applyDiscount()
-        }
-    },
-    applyCoupon: async ( couponName) => {
-        const req = await fetch ('/coupons/api', {
-            method: 'POST',
-            body: JSON.stringify({
-                coupon_name: couponName
-            })
-        })
-        const json = await req.json()
-        const coupon = CouponResponseSchema.parse (json)
-        set ( () => ({
-            coupon
-        }))
-        if (coupon.percentage) {
             get().applyDiscount()
         }
     },
-    applyDiscount : () => {
-    const subtotalAmount = get().contents.reduce((total, item) => total + (item.quantity * item.price ), 0);
-    const discount = (get().coupon.percentage/100)* subtotalAmount
-    const total = subtotalAmount - discount 
+    applyCoupon: async (couponName) => {
+    try {
+        console.log('🚀 Iniciando petición a:', 'http://localhost:3000/cupons');
+        console.log('📦 Enviando datos:', { name: couponName });
 
-    set ( ()=> ( {
-        discount,
-        total
+        const req = await fetch('http://localhost:3000/cupons/apply-cupons', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: couponName  // Solo enviar el nombre para buscar el cupón
+            })
+        });
+
+        console.log('✅ Respuesta recibida:');
+        console.log('Status:', req.status);
+        console.log('OK:', req.ok);
+
+        if (!req.ok) {
+            const errorData = await req.json();
+            console.error('❌ Error del servidor:', errorData);
+            set(() => ({
+                coupon: {
+                    name: '',
+                    percentage: 0,
+                    message: errorData.message || 'Error al aplicar el cupón'
+                }
+            }));
+            return;
+        }
+
+        const json = await req.json();
+        console.log('✅ JSON recibido:', json);
+
+        const coupon = {
+            name: json.name,
+            percentage: json.percentage,
+            message: 'Cupón aplicado correctamente',
+        };
+
+        set(() => ({ coupon }));
+
+        if (coupon.percentage) {
+            get().applyDiscount();
+        }
+
+    } catch (error) {
+        console.error('💥 Error applying coupon:', error);
+        set(() => ({
+            coupon: {
+                name: '',
+                percentage: 0,
+                message: 'Error al aplicar el cupón'
+            }
+        }));
     }
+},
+    applyDiscount: () => {
+        const subtotalAmount = get().contents.reduce((total, item) => total + (item.quantity * item.price), 0);
+        const discount = (get().coupon.percentage / 100) * subtotalAmount
+        const total = subtotalAmount - discount
 
-    ))
+        set(() => ({
+            discount,
+            total
+        }
+
+        ))
     },
 })))
