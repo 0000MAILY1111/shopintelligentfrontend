@@ -1,6 +1,7 @@
 "use server"
 
 import { ErrorResponseSchema, OrderSchema, SuccessResponseSchema } from "@/src/schemas"
+import { revalidateTag } from "next/cache"
 import { success } from "zod/v4"
 
 
@@ -23,7 +24,8 @@ export async function submitOrder(data : unknown){
         } 
     }
     const success = SuccessResponseSchema.parse (json)
-
+    revalidateTag('products-by-category')
+    ///revalidatePath ('/(store)/[categoryId]', 'page')
     console.log (order)
     return {
         errors : [],
