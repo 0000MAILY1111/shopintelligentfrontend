@@ -9,8 +9,7 @@ type AmountProps = {
 }
 export default function Amount ({label, amount, discount}: AmountProps) {
     return (
-        <div className= " flex justify-between" >
-            {`$ {discount && 'bg-green-400 text-green-400 text-green-800'}`}
+        <div className= {`${discount && 'bg-green-400 text-green-800'} flex justify-between p-1`}>
 
             <dt className="font-bold">
                 <span className="text-gray-500">{label}</span>
