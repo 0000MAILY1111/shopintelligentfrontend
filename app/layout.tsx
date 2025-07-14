@@ -30,6 +30,7 @@ export default function RootLayout({
               <ShoppingCart />
             </aside>
           </main>
+          
         </div>
       </body>
     </html>

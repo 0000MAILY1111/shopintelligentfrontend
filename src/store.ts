@@ -86,7 +86,6 @@ export const useStore = create<Store>()(devtools((set, get) => ({
       const req = await fetch('http://localhost:3001/api/cupons/apply-cupons', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        // ✅ CAMBIO PRINCIPAL: 'cuponname' en lugar de 'name'
         body: JSON.stringify({ cuponname: couponName })
       });
       
@@ -109,7 +108,7 @@ export const useStore = create<Store>()(devtools((set, get) => ({
         return;
       }
       
-      // Éxito - aplicar cupón
+     
       set(() => ({ 
         coupon: { 
           name: data.name, 

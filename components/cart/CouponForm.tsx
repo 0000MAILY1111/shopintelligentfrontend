@@ -10,7 +10,6 @@ export default function CouponForm() {
     const formData = new FormData(e.currentTarget);
     const couponName = formData.get('coupon_name')?.toString();
     
-    // Validación mejorada
     if (!couponName || !couponName.trim().length) {
       console.log('Por favor ingresa un cupón válido');
       return;
