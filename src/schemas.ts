@@ -83,4 +83,3 @@ export type CartItem = z.infer <typeof ShoppingCartContentsSchema>
 export type Coupon = z.infer<typeof CouponResponseSchema>
 export type Transaction = z.infer<typeof TransactionResponseSchema>
 
-export type Category = z.infer<typeof CategorySchema>;
