@@ -4,17 +4,16 @@ import { getSalesByDate } from "@/src/api"
 import { useQuery } from "@tanstack/react-query"
 import { format } from "date-fns"
 import { useState } from "react"
+import Calendar from "react-calendar"
 import "react-calendar/dist/Calendar.css"
 import TransactionSummary from "./TransactionSummary"
 import { Transaction } from "@/src/schemas"
 import { formatCurrency } from "@/src/utils"
 import dynamic from "next/dynamic"
 
-const Calendar = dynamic( () => import ("react-calendar"), {
-    ssr:false 
-}
 
-)
+
+
 type ValuePiece = Date | null
 type Value = ValuePiece | [ValuePiece, ValuePiece]
 
@@ -46,7 +45,8 @@ export default function TransactionFilter() {
             <div className="lg-sticky lg:top-10 ">
                 <Calendar
                     value={date}
-                    onChange={setDate} />
+                    onChange={setDate}
+                    locale="es" />   
             </div>
             <div>
                 {isLoading && 'Cargando...'}
