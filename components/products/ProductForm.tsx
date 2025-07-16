@@ -1,20 +1,20 @@
-import { CategoriesResponseSchema } from "@/src/schemas"
+import { CategoriesResponseSchema, Product } from "@/src/schemas"
 
 async function getCategories() {
-    const url = `${process.env.API_URL}/categories`  ///componente que se renderiza en el servidor
-    const req = await fetch (url)
-    const json = await req.json()
-    const categories = CategoriesResponseSchema.parse(json)
-    return categories
+  const url = `${process.env.API_URL}/categories`  ///componente que se renderiza en el servidor
+  const req = await fetch(url)
+  const json = await req.json()
+  const categories = CategoriesResponseSchema.parse(json)
+  return categories
 }
- ///componente que es parte del servidor 
+///componente que es parte del servidor 
 
 
-export default async function ProductForm() {
+export default async function ProductForm({ product }: { product?: Product }) {
 
-    const categories = await getCategories()
+  const categories = await getCategories()
 
-    return (
+  return (
     <>
       <div className="space-y-2 ">
         <label
@@ -27,6 +27,7 @@ export default async function ProductForm() {
           placeholder="Nombre Producto"
           className="border border-gray-300 w-full p-2"
           name="name"
+          defaultValue={product?.name}  ///pueda que noe xista 
         />
       </div>
 
@@ -42,6 +43,7 @@ export default async function ProductForm() {
           className="border border-gray-300 w-full p-2"
           name="price"
           min={0}
+          defaultValue={product?.price}
         />
       </div>
 
@@ -57,6 +59,7 @@ export default async function ProductForm() {
           className="border border-gray-300 w-full p-2"
           name="inventory"
           min={0}
+          defaultValue={product?.inventory}
         />
       </div>
 
@@ -68,15 +71,16 @@ export default async function ProductForm() {
         <select
           id="categoryId"
           className="border border-gray-300 w-full p-2 bg-white"
-          name="categoryId" 
-        >   
+          name="categoryId"
+          defaultValue={product?.categoryId}
+        >
           <option value="">Seleccionar Categoría</option>
-          {categories.map (category => (
+          {categories.map(category => (
             <option key={category.id} value={category.id}>
-                {category.name}
+              {category.name}
             </option>
           ))}
-    
+
         </select>
       </div>
 

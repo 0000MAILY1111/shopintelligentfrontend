@@ -9,7 +9,7 @@ export default function AddProductForm({ children }: { children: React.ReactNode
 
     const router = useRouter()
     
-    const [state, dispatch] = useActionState(addProduct, {
+    const [state, dispatch] = useActionState( addProduct, {
         errors: [],
         success: ''
     })

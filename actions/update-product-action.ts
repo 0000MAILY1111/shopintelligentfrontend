@@ -1,13 +1,13 @@
 "use server"
 
-import { ErrorResponseSchema, ProductFormSchema } from "@/src/schemas"
+import { ErrorResponseSchema, Product, ProductFormSchema } from "@/src/schemas"
 
 type ActionStateType = {
     errors : string []
     success : string 
 }
 
-export async function addProduct( prevState: ActionStateType, formData: FormData ){
+export async function updateProduct( productId: Product['id'], prevState: ActionStateType, formData: FormData ){
     const product = ProductFormSchema.safeParse({ ///la mejor opcion para que se muestre los mensajes de error
         name: formData.get('name'),
         price: formData.get('price'),
@@ -21,9 +21,9 @@ export async function addProduct( prevState: ActionStateType, formData: FormData
         }
     }
 
-    const url = `${process.env.API_URL}/products`    ///conection server action 
+    const url = `${process.env.API_URL}/products/${productId}`    ///conection server action 
     const req = await fetch (url, {
-        method: 'POST', 
+        method: 'PUT', 
         headers: {
             'Content-Type': 'application/json'
         }, 
@@ -41,6 +41,6 @@ export async function addProduct( prevState: ActionStateType, formData: FormData
 
     return {
     errors: [],
-    success: 'Producto agregado Correctamente'
+    success: 'Producto Actualizado Correctamente'
    }
 }
