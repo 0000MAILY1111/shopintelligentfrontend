@@ -4,7 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import DeleteProductForm from "./DeleteProductForm"
 
-export default function ProductsTable( {products}: {products : Product[]}) {
+export default function ProductsTable({ products }: { products: Product[] }) {
 
 
   return (
@@ -35,37 +35,37 @@ export default function ProductsTable( {products}: {products : Product[]}) {
               </thead>
               <tbody className="divide-y divide-gray-200">
                 {products.map(product => (
-                    <tr key= {product.id}>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                            <Image
-                                src = {`${process.env.API_URL}/img/${product.image}`}
-                                alt = {`Imagen del Producto ${product.name}`}
-                                width={120}
-                                height={120}
-                                priority
-                            />
-                      </td>
-                      <td className="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
-                        {product.name}
-                      </td>
-                      <td className="px-3 py-4 text-sm text-gray-500">
-                        {formatCurrency(product.price)}
-                      </td>
-                      <td className="px-3 py-4 text-sm text-gray-500">
-                        {product.inventory}
-                      </td>
-                      <td className="relative py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0 ">
-                        <div className='flex gap-5 justify-end items-center'>
-                                <Link className = "text-indigo-600 hover:text-indigo-800"
-                                href={`/admin/products/${product.id}/edit`}
-                                > Edit <span className="sr-only">, {product.name}</span> </Link>
-                                    
-                                  <DeleteProductForm
-                                  productId={product.id}
-                                  />
-                        </div>
-                      </td>
-                    </tr>
+                  <tr key={product.id}>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      <Image
+                        src={`${process.env.API_URL}/img/${product.image}`}
+                        alt={`Imagen del Producto ${product.name}`}
+                        width={120}
+                        height={120}
+                        priority
+                      />
+                    </td>
+                    <td className="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
+                      {product.name}
+                    </td>
+                    <td className="px-3 py-4 text-sm text-gray-500">
+                      {formatCurrency(product.price)}
+                    </td>
+                    <td className="px-3 py-4 text-sm text-gray-500">
+                      {product.inventory}
+                    </td>
+                    <td className="relative py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0 ">
+                      <div className='flex gap-5 justify-end items-center'>
+                        <Link className="text-indigo-600 hover:text-indigo-800"
+                          href={`/admin/products/${product.id}/edit`}
+                        > Edit <span className="sr-only">, {product.name}</span> </Link>
+
+                        <DeleteProductForm
+                          productId={product.id}
+                        />
+                      </div>
+                    </td>
+                  </tr>
                 ))}
               </tbody>
             </table>
