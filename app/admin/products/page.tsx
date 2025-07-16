@@ -3,6 +3,7 @@ import Heading from "@/components/ui/Heading";
 import Pagination from "@/components/ui/Pagination";
 import { ProductResponseSchema } from "@/src/schemas";
 import { isValidPage } from "@/src/utils";
+import Link from "next/link";
 import { redirect } from "next/navigation";  ///import next-navigation
 
 async function getProducts(take: number, skip: number) {
@@ -29,12 +30,19 @@ export default async function ProductsPage({searchParams}: {searchParams: Search
     if (+page > totalPages) redirect('/admin/products?page=1')
     return (
         <>
+            <Link
+            href='/admin/products/new'
+            className="rounded bg-green-400 font-bold py-2 px-10"
+            >
+                Nuevo Producto 
+            </Link>
             <Heading>Administrar Productos</Heading>
             <ProductsTable
                 products={products} />
             <Pagination
                 page={+page}   ///+ para que lo tome como string cualquier numero que se pase 
                 totalPages={totalPages}
+                baseUrl="/admin/products"  ///paginacion con base a la url 
             />
         </>
     )
